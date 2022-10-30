@@ -14,6 +14,7 @@
 
 # Vscode-specific files
 .vscode/
+.history/
 
 # Build results
 [Dd]ebug/

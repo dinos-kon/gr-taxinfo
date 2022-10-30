@@ -30,23 +30,25 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/dinos-kon/gr-taxinfo">
+    <img src="images/aade-logo-greece.png" alt="Logo of aade.gr" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">gr-taxInfo</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    A RESTful service to retrieve information on physical and legal tax entities which are registered and active in Greece!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://github.com/dinos-kon/gr-taxinfo"><strong>Explore the docs »</strong></a>
+    <br /><br />
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/dinos-kon/gr-taxinfo/Postman">Run a Postman Demo</a>
+    <br />
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/dinos-kon/gr-taxinfo/CustomConnector">Import a PowerPlatform Custom Connector</a>
+    <br />
+    ·
+    <a href="https://github.com/dinos-kon/gr-taxinfo/issues">Request Feature</a>
   </p>
 </div>
 
@@ -85,14 +87,18 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Using this service, legal entities and natural persons that are registered in Greece and receive income from business activities in Greece can search for basic information in order to verify the tax or professional status of other legal entities or taxable/natural persons with which they carry out business activities.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+This connector calls a service offered by the Hellenic (Greek) tax authorities. To use this service you must be an active physical or legal entity registered in Greece. You will also need to register for this service and retrieve a username and password. Detailed instructions and FAQ in the document that follows: https://www.aade.gr/sites/default/files/2018-07/FAQS_anazitisi_vasikwn_stx_mitrwou_epix.pdf
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+The project includes:
+* Service #1: GetTaxInfo, which requires 4 parameters:
+  * CallerTIN (mandatory)
+  * CallerUsername (mandatory)
+  * CallerPassword (mandatory)
+  * QueriedTIN (mandatory)
+* Service #2: GetTaxInfoUsingVault, which improves the security by using an Aure Vault and requires 1 parameter:
+  * QueriedTIN (mandatory)
 
 Use the `BLANK_README.md` to get started.
 
@@ -104,8 +110,10 @@ Use the `BLANK_README.md` to get started.
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
+* [![VisualStudio][VisualStudio-img]][VisualStudio-url]
+* [![Azure-Functions][Azure-Functions]][Azure-Functions-url]
+
+
 * [![Vue][Vue.js]][Vue-url]
 * [![Angular][Angular.io]][Angular-url]
 * [![Svelte][Svelte.dev]][Svelte-url]
@@ -252,10 +260,11 @@ Use this space to list resources you find helpful and would like to give credit 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
+[VisualStudio-img]: https://img.shields.io/badge/visual%20studio-community%202022-5C2D91?logo=visualstudio
+[VisualStudio-url]: https://visualstudio.microsoft.com/
+
+[Azure-Functions]: https://img.shields.io/badge/Azure-Functions-0062AD?logo=azurefunctions
+[Azure-Functions-url]: https://learn.microsoft.com/en-us/azure/azure-functions/
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
