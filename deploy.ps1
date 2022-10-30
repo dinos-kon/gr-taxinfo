@@ -2,17 +2,25 @@
 Install-Module Az.Resources -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
 npm i -g azure-functions-core-tools@4 --unsafe-perm true
 #>
-$userIdObj = $null # '660b1851-e4aa-475f-bfa2-2bf9671d5261'
+
+#region Get the current (connected) user's Id from azure
+$userIdObj = $null 
 if ($null -eq $userIdObj){
     $userId = az login
+    $userId = az ad signed-in-user show
     if ($userId[0] -eq "[") { $userId[0]=[String]::Empty }
     if ($userId[$userId.Count-1] -eq "]") {$userId[$userId.Count-1] = "" }
     $userIdObj = ConvertFrom-Json ([String]::Join('', $userId).ToString())
 } else {
     $userIdObj.id = $userIdObj
 }
-$NewId = [guid]::NewGuid().ToString().Substring(0,5)
+#endregion 
 
+#region Get a random suffix (useful while developing/debugging)
+$NewId = [guid]::NewGuid().ToString().Substring(0,5)
+#endregion 
+
+#region Get the name of the project
 do {
     $projectName = Read-Host -Prompt "Please provide a name to your project (only alphanumeric an hyphens allowed), hit enter to default: gr-taxinfo"
     $projectName = $projectName.ToLower()
@@ -22,9 +30,13 @@ do {
         Write-Error "Please make sure you are following the azure naming rules: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules"
     }
 } while ($projectNameInvalid)
-$rgName = ("rg-$projectName-"+$NewId)
-# $vaultName = ("$projectName-Vault-"+$NewId)
+#endregion
 
+#region construct the names of the resource group and all the conained resources
+
+$rgName = ("rg-$projectName-"+$NewId)
+
+#region Ensure the name is not used already
 #ensure we get a response even if an error's returned
 $response = try { 
     $functionUri = "https://$projectName-$NewId-func.azurewebsites.net"
@@ -40,6 +52,7 @@ if ($statusCodeInt -eq 200){
     Exit-PSHostProcess
     exit
 }
+#endregion 
 
 Write-Host "Creating new Resource Group: $rgName" -ForegroundColor Blue
 $group = az group create --name $rgName --location westeurope
@@ -51,14 +64,29 @@ $groupObj_name=($groupObj.name)
 $userIdObj_id=($userIdObj.id).ToString().Trim()
 # $vault = 
 
-az deployment group create --resource-group $groupObj_name --template-file gr-taxinfo-infra.bicep `
-    --parameters OwnerId=$userIdObj_id projectName=$projectName 
+$out = az deployment group create --resource-group $groupObj_name --template-file .\gr-taxinfo-infra\gr-taxinfo-infra.bicep `
+    --parameters OwnerId=$userIdObj_id projectName=$projectName theCallerTIN=$theCallerTIN | convertfrom-json 
+    # | ForEach-Object properties | ForEach-Object outputs
 
-Write-Host "Created new Resources: (TODO)"
+Write-Host "Created new Resources: ($out)"
 
 <# to remove everything
-Get-AzResourceGroup|Where-Object {$_.ResourceGroupName -like 'DeleteMe*'}| Remove-AzResourceGroup -Confirm:$false -Force
+Get-AzResourceGroup|Where-Object {$_.ResourceGroupName -like 'rg-proj*'}| Remove-AzResourceGroup -Confirm:$false -Force
 
 $functionExistsResponse = Invoke-WebRequest -Uri "https://gr-gettaxinfo-none.azurewebsites.net/"
 
 #>
+
+# Set-Location ..\gr-gettaxinfo
+dotnet publish -c Release
+$publishFolder = ".\gr-gettaxinfo\bin\release\net6.0\publish\"
+
+# create the zip
+$publishZip = "gr-gettaxinfo-publish.zip"
+if(Test-path $publishZip) {Remove-item ($publishZip)}
+Add-Type -assembly "system.io.compression.filesystem"
+[io.compression.zipfile]::CreateFromDirectory($publishFolder, $publishZip)
+
+# deploy the zipped package
+az functionapp deployment source config-zip `
+ -g $rgName -n ($out.properties.outputs.functionObject.value.properties.name) --src $publishZip

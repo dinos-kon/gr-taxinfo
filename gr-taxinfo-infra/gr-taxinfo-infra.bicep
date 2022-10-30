@@ -1,6 +1,9 @@
 ﻿@description('Specifies the name of the project. Will be used as prefix for resources.')
 param projectName string = 'prj001001'
 
+@description('Specifies the Tax Identification number of the Caller.')
+param theCallerTIN string = '999999999'
+
 @description('Specifies the Azure location where the key vault should be created.')
 param location string = resourceGroup().location
 
@@ -43,7 +46,7 @@ param skuName string = 'standard'
   'dotnet'
   'java'
 ])
-param funcRuntime string = 'dotnet'
+param functionWorkerRuntime string = 'dotnet'
 
 @description('Storage Account type')
 @allowed([
@@ -55,7 +58,9 @@ param storageAccountType string = 'Standard_LRS'
 
 var storageAccountName = replace('${projectName}stor','-','')
 var keyVaultName = '${projectName}-vault'
-var hostingPlanName = '${projectName}-hosting'
+var hostingPlanName = '${projectName}-host'
+var functionAppName = '${projectName}-func'
+var applicationInsightsName = '${projectName}-appinsights'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: storageAccountName
@@ -70,10 +75,11 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   name: hostingPlanName
   location: location
   sku: {
-    name: 'Y1'
-    tier: 'Dynamic'
+    name: 'F1'
+    tier: 'Free'
   }
-  properties: {}
+  properties: {
+  }
 }
 
 @description('The gsis username key (it should be \'gr-gsis-username\', unless changed in the function settings too)')
@@ -136,3 +142,72 @@ resource gsisPassword 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
     value: passwordValue
   }
 }
+
+
+resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
+  name: functionAppName
+  location: location
+  kind: 'functionapp'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: hostingPlan.id
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+        }
+        {
+          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+        }
+        {
+          name: 'WEBSITE_CONTENTSHARE'
+          value: toLower(functionAppName)
+        }
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'WEBSITE_NODE_DEFAULT_VERSION'
+          value: '~18'
+        }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: applicationInsights.properties.InstrumentationKey
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: functionWorkerRuntime
+        }
+        {
+          name:'VaultUri'
+          value:theKeyVault.properties.vaultUri
+        }
+        {
+          name:'gr-gsis-CallerTIN'
+          value:theCallerTIN
+        }
+      ]
+      ftpsState: 'FtpsOnly'
+      minTlsVersion: '1.2'
+    }
+    httpsOnly: true
+  }
+}
+
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: applicationInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    Request_Source: 'rest'
+  }
+}
+
+output functionObject object = functionApp
+output hostingPlanObject object = hostingPlan
