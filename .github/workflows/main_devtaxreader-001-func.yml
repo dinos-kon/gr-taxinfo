@@ -31,7 +31,14 @@ jobs:
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           dotnet build --configuration Release --output ./output
           popd
-
+          
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: dinos-kon
+          minimum-approvals: 1
+          issue-title: "Deploying via ci/cd"
+          
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
