@@ -219,7 +219,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Dinos KONSTANTINOU - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
 Project Link: [https://github.com/dinos-kon/gr-taxinfo/](https://github.com/dinos-kon/gr-taxinfo/)
 
