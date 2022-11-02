@@ -78,8 +78,8 @@ $functionExistsResponse = Invoke-WebRequest -Uri "https://gr-gettaxinfo-none.azu
 #>
 
 # Set-Location ..\gr-gettaxinfo
-dotnet publish -c Release
-$publishFolder = ".\gr-gettaxinfo\bin\release\net6.0\publish\"
+dotnet publish -c Debug
+$publishFolder = ".\gr-gettaxinfo\bin\debug\net6.0\publish\"
 
 # create the zip
 $publishZip = "gr-gettaxinfo-publish.zip"
