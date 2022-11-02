@@ -343,7 +343,7 @@ namespace gr.gsis.rgwspublic
                     {
                         Console.WriteLine($@"{incomingEnvelope?.Body.RgWsPublic2AfmMethodResponse.Result.Rg_ws_public2_result_rtType.Basic_rec.Afm}: {incomingEnvelope?.Body.RgWsPublic2AfmMethodResponse.Result.Rg_ws_public2_result_rtType.Basic_rec.Commer_title}");
                     }
-                    else
+                    /*
                     {
                         Console.WriteLine($"RAW: {rawWebResponse}\n");
                         using (StringWriter elseTextWriter = new StringWriter())
@@ -354,7 +354,7 @@ namespace gr.gsis.rgwspublic
                                 Console.WriteLine($"{elseTextWriter.ToString()}\n");
                             }
                         }
-                    }
+                    }*/
                 }
                 catch (Exception e)
                 {
