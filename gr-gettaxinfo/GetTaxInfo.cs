@@ -111,8 +111,8 @@ namespace gr.gsis.rgwspublic
         public const string gsisCallerTIN_settingName = "gr-gsis-CallerTIN";
 
         /* Vault secrets */
-        public static string gsisUsername_settingName = "gr-gsis-username";
-        public static string gsisPassword_settingName = "gr-gsis-password";
+        public const string gsisUsername_settingName = "gr-gsis-username";
+        public const string gsisPassword_settingName = "gr-gsis-password";
 
         /* POST parameters */
         public const string CallerTIN_paramName = "CallerTIN";
