@@ -56,6 +56,8 @@ jobs:
           dotnet restore
           # dotnet build --configuration Release --output ./output
           dotnet publish --configuration Release -o './published-app'
+          ls
+          ls './published-app'
           popd
           
   deploy-job:
