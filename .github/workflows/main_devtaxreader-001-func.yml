@@ -3,22 +3,22 @@
 
 name: Build and deploy dotnet core app to Azure Function App - devtaxreader-001-func
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+# on:
+#  push:
+#    branches:
+#      - main
+#  workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.*' # set this to the dotnet version to use
 
 jobs:
-  build-and-deploy:
+  build-job:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v2
+        uses: actions/checkout@vmaster
 
       - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
@@ -29,21 +29,28 @@ jobs:
         shell: pwsh
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet restore
           dotnet build --configuration Release --output ./output
+          dotnet publish -c Release -o './published-app'
           popd
           
-      - uses: trstringer/manual-approval@v1
+  deploy-job:
+    runs-on: ubuntu-latest
+    needs: build-job
+    steps:
+      - name: "Pause and Wait for manual approval"
+        uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
           approvers: dinos-kon
           minimum-approvals: 1
-          issue-title: "Deploying via ci/cd"
-          
+          issue-title: "Deploying ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }} via ci/cd"
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
           app-name: 'devtaxreader-001-func'
-          slot-name: 'Production'
+          # slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_10D46073F3E44FAC8671D91BD6B5CB58 }}
+
