@@ -3,11 +3,11 @@
 
 name: Build and deploy dotnet core app to Azure Function App - devtaxreader-001-func
 
-# on:
+on:
 #  push:
 #    branches:
 #      - main
-#  workflow_dispatch:
+  workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
