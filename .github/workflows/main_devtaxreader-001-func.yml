@@ -36,9 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Workflow is now starting"
-        echo "Log level: $LEVEL"
-        echo "Tags: $TAGS"
-        echo "Environment: $ENVIRONMENT"
+        run: |
+          echo "Log level: $LEVEL"
+          echo "Tags: $TAGS"
+          echo "Environment: $ENVIRONMENT"
 
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
