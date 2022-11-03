@@ -8,15 +8,38 @@ on:
 #    branches:
 #      - main
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        type: environment
+        required: true
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Fire up the rocket to the moon?'
+        required: false
+        type: boolean
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './gr-gettaxinfo' # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.*' # set this to the dotnet version to use
 
 jobs:
   build-job:
     runs-on: ubuntu-latest
     steps:
+      - name: "Workflow is now starting"
+        echo "Log level: $LEVEL"
+        echo "Tags: $TAGS"
+        echo "Environment: $ENVIRONMENT"
+
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
 
@@ -30,8 +53,8 @@ jobs:
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           dotnet restore
-          dotnet build --configuration Release --output ./output
-          dotnet publish -c Release -o './published-app'
+          # dotnet build --configuration Release --output ./output
+          dotnet publish --configuration Release -o './published-app'
           popd
           
   deploy-job:
@@ -51,6 +74,6 @@ jobs:
         with:
           app-name: 'devtaxreader-001-func'
           # slot-name: 'Production'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/published-app'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_10D46073F3E44FAC8671D91BD6B5CB58 }}
 
