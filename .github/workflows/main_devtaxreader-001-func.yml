@@ -44,10 +44,10 @@ jobs:
           LEVEL: ${{ inputs.logLevel }}
           MOON: ${{ inputs.toTheMoon }}
           ENVIRONMENT: ${{ inputs.environment }}
-  # deploy-job:
-  #   runs-on: ubuntu-latest
-  #   needs: build-job
-  #   steps:
+      # deploy-job:
+      #   runs-on: ubuntu-latest
+      #   needs: build-job
+      #   steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@main
       - name: 'Setup DotNet ${{ env.DOTNET_VERSION }} Environment'
@@ -64,10 +64,10 @@ jobs:
           ls
           ls './published-app'
           popd
-  # deploy-job:
-  #   runs-on: ubuntu-latest
-  #   needs: build-job
-  #   steps:
+      # deploy-job:
+      #   runs-on: ubuntu-latest
+      #   needs: build-job
+      #   steps:
       # - name: 'Resolve Project Dependencies Using Dotnet'
       #   shell: pwsh
       - name: 'Peek into the publication results'
