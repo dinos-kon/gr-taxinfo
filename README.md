@@ -29,7 +29,7 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<div align="center">
+<div align="left">
   <a href="https://github.com/dinos-kon/gr-taxinfo">
     <img src="images/aade-logo-greece.png" alt="Logo of aade.gr" width="80" height="80">
   </a>
