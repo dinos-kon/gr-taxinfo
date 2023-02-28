@@ -26,18 +26,19 @@
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
-
-<!-- PROJECT LOGO -->
 <br />
-<div align="left">
-  <a href="https://github.com/dinos-kon/gr-taxinfo">
-    <img src="images/aade-logo-greece.png" alt="Logo of aade.gr" width="80" height="80">
-  </a>
-
+<div align="">
+  
+  <div align="center">
+    <a href="https://github.com/dinos-kon/gr-taxinfo">
+      <!-- PROJECT LOGO -->
+      <img src="images/aade-logo-greece.png" alt="Logo of aade.gr" width="80" height="80">
+    </a>
+  </div>
   <h3 align="center">gr-taxInfo</h3>
 
-  <p align="center">
-    A RESTful service to retrieve information on physical and legal tax entities which are registered and active in Greece!
+  <p align="left">
+    A REST service to retrieve information on physical and legal tax entities which are registered and active in Greece!
     <br />
     <a href="https://github.com/dinos-kon/gr-taxinfo"><strong>Explore the docs »</strong></a>
     <br /><br />
@@ -61,7 +62,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#built-with">Built With</a> C#, Azure Functions, ...</li>
       </ul>
     </li>
     <li>
@@ -85,26 +86,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 Using this service, legal entities and natural persons that are registered in Greece and receive income from business activities in Greece can search for basic information in order to verify the tax or professional status of other legal entities or taxable/natural persons with which they carry out business activities.
 
 This connector calls a service offered by the Hellenic (Greek) tax authorities. To use this service you must be an active physical or legal entity registered in Greece. You will also need to register for this service and retrieve a username and password. Detailed instructions and FAQ in the document that follows: https://www.aade.gr/sites/default/files/2018-07/FAQS_anazitisi_vasikwn_stx_mitrwou_epix.pdf
 
 The project includes:
-* Service #1: GetTaxInfo, which requires 4 parameters:
+* Service #1: GetTaxInfo, four (4) required parameters:
   * CallerTIN (mandatory)
   * CallerUsername (mandatory)
   * CallerPassword (mandatory)
   * QueriedTIN (mandatory)
-* Service #2: GetTaxInfoUsingVault, which improves the security by using an Aure Vault and requires 1 parameter:
+* Service #2: GetTaxInfoUsingVault, which improves the security by using an Aure Vault and requires one (1) parameter:
   * QueriedTIN (mandatory)
 
-Use the `BLANK_README.md` to get started.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -113,17 +108,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [![VisualStudio][VisualStudio-img]][VisualStudio-url]
 * [![Azure-Functions][Azure-Functions]][Azure-Functions-url]
 
-
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -143,10 +128,10 @@ This is an example of how to list things you need to use the software and how to
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [https://example.com](https://example.com)
+1. Get a free API Key at [AADE - ΗΛΕΚΤΡΟΝΙΚΗ ΥΠΗΡΕΣΙΑ - Αναζήτηση Βασικών Στοιχείων Μητρώου Επιχειρήσεων](https://www1.gsis.gr/webtax/wspublicreg/faces/pages/wspublicreg/menu.xhtml)
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/dinos-kon/gr-taxinfo.git
    ```
 3. Install NPM packages
    ```sh
@@ -155,6 +140,7 @@ _Below is an example of how you can instruct your audience on installing and set
 4. Enter your API in `config.js`
    ```js
    const API_KEY = 'ENTER YOUR API';
+   // TODO: add instructions for deploying the key in the vault
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -240,6 +226,17 @@ Use this space to list resources you find helpful and would like to give credit 
 * [GitHub Pages](https://pages.github.com)
 * [Font Awesome](https://fontawesome.com)
 * [React Icons](https://react-icons.github.io/react-icons/search)
+
+## Parked material
+
+* [![Vue][Vue.js]][Vue-url]
+* [![Angular][Angular.io]][Angular-url]
+* [![Svelte][Svelte.dev]][Svelte-url]
+* [![Laravel][Laravel.com]][Laravel-url]
+* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![JQuery][JQuery.com]][JQuery-url]
+
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
